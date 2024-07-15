@@ -35,10 +35,10 @@ class Session
     private ?string $ville = null;
 
     /**
-     * @var Collection<int, STAGIAIRE>
+     * @var Collection<int, Stagiaire>
      */
-    #[ORM\ManyToMany(targetEntity: STAGIAIRE::class, inversedBy: 'sessions')]
-    private Collection $stagiaires;
+    #[ORM\ManyToMany(targetEntity: Stagiaire::class, inversedBy: 'sessions')]
+    private Collection $Stagiaires;
 
     /**
      * @var Collection<int, Programme>
@@ -53,8 +53,8 @@ class Session
 
     public function __construct()
     {
-        $this->inscriptions = new ArrayCollection();
-        $this->stagiaires = new ArrayCollection();
+        // $this->inscriptions = new ArrayCollection();
+        $this->Stagiaires = new ArrayCollection();
         $this->programmes = new ArrayCollection();
     }
 
@@ -136,25 +136,25 @@ class Session
     }
 
     /**
-     * @return Collection<int, STAGIAIRE>
+     * @return Collection<int, Stagiaire>
      */
     public function getStagiaires(): Collection
     {
-        return $this->stagiaires;
+        return $this->Stagiaires;
     }
 
-    public function addStagiaire(STAGIAIRE $stagiaire): static
+    public function addStagiaire(Stagiaire $Stagiaire): static
     {
-        if (!$this->stagiaires->contains($stagiaire)) {
-            $this->stagiaires->add($stagiaire);
+        if (!$this->Stagiaires->contains($Stagiaire)) {
+            $this->Stagiaires->add($Stagiaire);
         }
 
         return $this;
     }
 
-    public function removeStagiaire(STAGIAIRE $stagiaire): static
+    public function removeStagiaire(Stagiaire $Stagiaire): static
     {
-        $this->stagiaires->removeElement($stagiaire);
+        $this->Stagiaires->removeElement($Stagiaire);
 
         return $this;
     }

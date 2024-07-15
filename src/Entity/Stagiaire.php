@@ -40,15 +40,15 @@ class Stagiaire
     /**
      * @var Collection<int, Session>
      */
-    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'stagiaires')]
+    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'Stagiaires')]
     private Collection $sessions;
 
    
     public function __construct()
-    {
-        $this->Session = new ArrayCollection();
-        $this->sessions = new ArrayCollection();
-    }
+{
+    $this->sessions = new ArrayCollection();
+}
+
 
     public function getId(): ?int
     {
