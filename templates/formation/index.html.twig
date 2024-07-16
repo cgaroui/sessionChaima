@@ -3,10 +3,11 @@
 {% block title %}Liste des formations{% endblock %}
 
 {% block body %}
+<div class="container"></div>
     <h1>Liste des formations</h1>
 
     {% for formation in formations %}
-       <p>{{ formation.nom }}</p>
+       <a href="{{path('app_session', {'id':formation.id})}}">{{ formation.nom }}</a>
        <br>
     {% endfor %}
 {% endblock %}

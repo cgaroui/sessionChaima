@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail d'une Session{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>formation : {{ programme.session.intitule }}</h1>
+
+    <h3>Liste des modules</h3>
+    {# on verifie si le tableau(collection) sessions dans formation est vide => categorie vide #}
+    {% if programme.session.programmes|length > 0 %}
+        <ul>
+            {% for programme in programme.session.programmes %}
+                <li>{{ programme.module.nom }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Cette formation n'a aucun session.</p>
+    {% endif %}
+</div>    
+{% endblock %}

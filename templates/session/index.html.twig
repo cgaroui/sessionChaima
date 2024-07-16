@@ -23,7 +23,7 @@
     
         <tbody>
         <tr class="table-active">
-            <th >{{ session.intitule }}</th>
+            <th ><a href="{{path('show_programme',{id : session.id})}}">{{ session.intitule }}</a></th>
             <td>{{ session.ville }}</td>
             <td>{{ session.dateDebut |date("m-d-Y") }}</td>
             <td>{{ session.dateFin |date("m-d-Y") }}</td>

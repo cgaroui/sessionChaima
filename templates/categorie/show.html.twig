@@ -3,9 +3,10 @@
 {% block title %}Détail d'une catégorie{% endblock %}
 
 {% block body %}
+   <div class="container">
     <h1>Catégorie : {{ categorie.nom }}</h1>
-
-    <h3>Liste des programmes</h3>
+ 
+    <h3>Liste des modules</h3>
     {# on verifie si le tableau(collection) modulesessions dans categorie est vide => categorie vide #}
     {% if categorie.moduleSessions|length > 0 %}
         <ul>
@@ -16,4 +17,5 @@
     {% else %}
         <p>Cette catégorie n'a aucun programme.</p>
     {% endif %}
+    </div>
 {% endblock %}

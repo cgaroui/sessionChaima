@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}liste des modules{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Liste des formations</h1>
+
+    {% for programme in programmes %}
+       <a href="{{path('show_programme', {'id':programme.id})}}">{{ programme.session.intitule }}</a>
+       <br>
+    {% endfor %}
+</div>
+{% endblock %}

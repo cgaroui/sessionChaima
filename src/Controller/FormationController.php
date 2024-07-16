@@ -18,5 +18,14 @@ class FormationController extends AbstractController
             'formations' => $formations,
         ]);
     }
+
+    //id ici la clé primaire de l'objet formation qu'on veut recuperer 
+    #[Route('/formation/{id}', name: 'show_formation')]
+    public function show(Formation $formation): Response
+    {
+        return $this->render('formation/show.html.twig', [
+            'formation' => $formation
+         ]);
+    }
 }
 
