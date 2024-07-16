@@ -40,7 +40,7 @@ class Stagiaire
     /**
      * @var Collection<int, Session>
      */
-    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'Stagiaires')]
+    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'stagiaires')]
     private Collection $sessions;
 
    

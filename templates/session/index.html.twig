@@ -1,20 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SessionController!{% endblock %}
+{% block title %}Liste des Sessions{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="containner">
+    <h1>Liste des Sessions</h1>
+    
+    <table class="table table-hover " >
+        <thead>
+            <tr>
+                <th >Intitulé</th>
+                <th >ville</th>
+                <th >date debut </th>
+                <th >date fin</th>
+                <th>nombre de places total</th>
+                <th>nombre de places réservées</th> 
+              </tr>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/symfony/sessionChaima/src/Controller/SessionController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/symfony/sessionChaima/templates/session/index.html.twig</code></li>
-    </ul>
+    {% for session in sessions %}
+    <p></p>
+    <br>
+    
+        <tbody>
+        <tr class="table-active">
+            <th >{{ session.intitule }}</th>
+            <td>{{ session.ville }}</td>
+            <td>{{ session.dateDebut |date("m-d-Y") }}</td>
+            <td>{{ session.dateFin |date("m-d-Y") }}</td>
+            <td>{{ session.nbPlaces }}</td>
+            <td>{{ session.placesReserve }}</td>
+            
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

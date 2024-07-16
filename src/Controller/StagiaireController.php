@@ -2,17 +2,32 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Stagiaire;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StagiaireController extends AbstractController
 {
-    #[Route('/Stagiaire', name: 'app_Stagiaire')]
-    public function index(): Response
+    #[Route('/stagiaire', name: 'app_stagiaire')]
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('Stagiaire/index.html.twig', [
-            'controller_name' => 'StagiaireController',
+        $stagiaires = $entityManager->getRepository(Stagiaire::class)->findAll();
+
+        return $this->render('stagiaire/index.html.twig', [
+            'stagiaires' => $stagiaires,
         ]);
     }
+
+    #[Route('/stagiaire/{id}', name: 'show_stagiaire')]
+    public function show(Stagiaire $stagiaire): Response
+    {
+   
+        return $this->render('stagiaire/show.html.twig', [
+            'stagiaire' => $stagiaire,
+        ]);
+    }
+
+
 }
