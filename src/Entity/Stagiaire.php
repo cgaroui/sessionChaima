@@ -166,5 +166,10 @@ class Stagiaire
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->nom . ' ' . $this->prenom;
+    }
+
     
 }
