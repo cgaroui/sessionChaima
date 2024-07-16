@@ -4,9 +4,25 @@
 
 {% block body %}
     <h1>Détail d'un stagiaire</h1>
-    <h2> {{ stagiaire }} </h2>
-  
+    <h2>{{ stagiaire }}</h2>
     
-    <h3>Liste de ses formations  </h3>
-   
+    <p><strong>Nom :</strong> {{ stagiaire.nom }}</p>
+    <p><strong>Prénom :</strong> {{ stagiaire.prenom }}</p>
+    <p><strong>Date de naissance :</strong> {{ stagiaire.dateNaissance|date('d-m-Y') }}</p>
+    <p><strong>Adresse :</strong> {{ stagiaire.adresse }}</p>
+    <p><strong>Ville :</strong> {{ stagiaire.ville }}</p>
+    <p><strong>Email :</strong> {{ stagiaire.email }}</p>
+    <p><strong>Téléphone :</strong> {{ stagiaire.telephone }}</p>
+
+    <h3>Liste des formations auxquelles il est inscrit</h3>
+    {# on verifie si le tableau(collection) session dans stagiaire est vide => inscrit à aucune session #}
+    {% if stagiaire.sessions|length > 0 %}
+        <ul>
+            {% for session in stagiaire.sessions %}
+                <li>{{ session.nom }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ce stagiaire n'est inscrit à aucune formation.</p>
+    {% endif %}
 {% endblock %}
