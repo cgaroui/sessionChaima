@@ -1,14 +1,16 @@
+{# templates/programme/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}liste des modules{% endblock %}
+{% block title %}Liste des Programmes{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>Liste des formations</h1>
-
-    {% for programme in programmes %}
-       <a href="{{path('show_programme', {'id':programme.id})}}">{{ programme.session.intitule }}</a>
-       <br>
-    {% endfor %}
+    <h1>Liste des Programmes</h1>
+    <ul>
+        {% for programme in programmes %}
+            <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.getNom() }}</a></li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}

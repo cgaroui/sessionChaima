@@ -1,21 +1,23 @@
+
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Détail d'une Session{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>session : {{ session.intitule }}</h1>
+    <h1>Session : {{ session.intitule }}</h1>
+    <p>Description : {{ session.description }}</p>
 
-    <h3>Liste des Programmes</h3>
-    {% if Session.programmes|length > 0 %}
+    <h3>Programmes de la session</h3>
+    {% if session.programmes|length > 0 %}
         <ul>
-            {% for session in session.programmes %}
-            {# {{path('app_session', {'id':session.id})}}"> #}
-                <li><a href="#"{{ session.intitule }}</a></li>
+            {% for programme in session.programmes %}
+                <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.getNom() }}</a></li>
             {% endfor %}
         </ul>
     {% else %}
         <p>Cette session n'a aucun programme.</p>
     {% endif %}
-</div>    
+</div>
 {% endblock %}

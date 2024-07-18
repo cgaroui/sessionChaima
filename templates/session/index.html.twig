@@ -3,35 +3,31 @@
 {% block title %}Liste des Sessions{% endblock %}
 
 {% block body %}
-<div class="containner">
+<div class="container">
     <h1>Liste des Sessions</h1>
     
-    <table class="table table-hover " >
+    <table class="table table-hover">
         <thead>
             <tr>
-                <th >Intitulé</th>
-                <th >ville</th>
-                <th >date debut </th>
-                <th >date fin</th>
-                <th>nombre de places total</th>
-                <th>nombre de places réservées</th> 
-              </tr>
-
-    {% for session in sessions %}
-    <p></p>
-    <br>
-    
+                <th>Intitulé</th>
+                <th>Ville</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Nombre de places total</th>
+                <th>Nombre de places réservées</th> 
+            </tr>
+        </thead>
         <tbody>
-        <tr class="table-active">
-            <th ><a href="{{path('show_programme',{id : session.id})}}">{{ session.intitule }}</a></th>
-            <td>{{ session.ville }}</td>
-            <td>{{ session.dateDebut |date("m-d-Y") }}</td>
-            <td>{{ session.dateFin |date("m-d-Y") }}</td>
-            <td>{{ session.nbPlaces }}</td>
-            <td>{{ session.placesReserve }}</td>
-            
-        </tr>
-        {% endfor %}
+            {% for session in sessions %}
+            <tr class="table-active">
+                <td><a href="{{ path('show_session', { 'id': session.id }) }}">{{ session.intitule }}</a></td>
+                <td>{{ session.ville }}</td>
+                <td>{{ session.dateDebut | date("m-d-Y") }}</td>
+                <td>{{ session.dateFin | date("m-d-Y") }}</td>
+                <td>{{ session.nbPlaces }}</td>
+                <td>{{ session.placesReserve }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

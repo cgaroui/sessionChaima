@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des formations{% endblock %}
+{% block title %}Liste des Formations{% endblock %}
 
 {% block body %}
-<div class="container"></div>
-    <h1>Liste des formations</h1>
-
-    {% for formation in formations %}
-       <a href="{{path('app_session', {'id':formation.id})}}">{{ formation.nom }}</a>
-       <br>
-    {% endfor %}
+<div class="container">
+    <h1>Liste des Formations</h1>
+    <ul>
+        {% for formation in formations %}
+            <li><a href="{{ path('formation_sessions', { 'id': formation.id }) }}">{{ formation.nom }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

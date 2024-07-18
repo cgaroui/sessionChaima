@@ -1,0 +1,16 @@
+{# templates/formation/sessions.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Sessions de {{ formation.nom }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Sessions de {{ formation.nom }}</h1>
+    <ul>
+        {% for session in formation.sessions %}
+            <li><a href="{{ path('show_session', { 'id': session.id }) }}">{{ session.intitule }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

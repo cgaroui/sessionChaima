@@ -6,13 +6,11 @@ use App\Entity\Session;
 use App\Entity\Programme;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
 {
-
-    //pour afficher la liste des sessions
     #[Route('/session', name: 'app_session')]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -23,10 +21,27 @@ class SessionController extends AbstractController
         ]);
     }
 
+    #[Route('/session/{id}', name: 'show_session')]
+    public function show(Session $session): Response
+    {
+        return $this->render('session/show.html.twig', [
+            'session' => $session,
+        ]);
+    }
 
-    // //pour afficher la liste de programme 
+    #[Route('/session/{id}/programmes', name: 'session_programmes')]
+    public function programmes(Session $session): Response
+    {
+        $programmes = $session->getProgrammes();
+
+        return $this->render('session/programmes.html.twig', [
+            'session' => $session,
+            'programmes' => $programmes,
+        ]);
+    }
+
     #[Route('/programme', name: 'app_programme')]
-    public function programes(EntityManagerInterface $entityManager): Response
+    public function programmesList(EntityManagerInterface $entityManager): Response
     {
         $programmes = $entityManager->getRepository(Programme::class)->findAll();
 
@@ -35,12 +50,11 @@ class SessionController extends AbstractController
         ]);
     }
 
-    // pour afficher la liste de programme d'une session
     #[Route('/programme/{id}', name: 'show_programme')]
-    public function show(Programme $programme): Response
+    public function showProgramme(Programme $programme): Response
     {
         return $this->render('programme/show.html.twig', [
-            'programme' => $programme
-         ]);
+            'programme' => $programme,
+        ]);
     }
 }
