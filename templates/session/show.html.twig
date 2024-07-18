@@ -1,5 +1,3 @@
-
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Détail d'une Session{% endblock %}
@@ -9,20 +7,46 @@
     <h1>Session : {{ session.intitule }}</h1>
     <p>
         Date début : {{ session.dateDebut | date("d-m-Y") }}<br>
-        Date Fin : {{ session.dateFin | date("d-m-Y") }} <br>
-        Nombre de places : {{ session.nbPlaces}} <br>
-        Nombre de places réservées : {{ session.placesReserve}}
+        Date fin : {{ session.dateFin | date("d-m-Y") }}<br>
+        Nombre de places : {{ session.nbPlaces }}<br>
+        Nombre de places réservées : {{ session.placesReserve }}
     </p>
 
     <h3>Programmes de la session</h3>
     {% if session.programmes|length > 0 %}
         <ul>
             {% for programme in session.programmes %}
-                <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.module.nom() }}</a></li>
+                <li>{{ programme.module.nom }} : {{ programme.nbJours }} jours</li>
             {% endfor %}
         </ul>
     {% else %}
         <p>Cette session n'a aucun programme.</p>
+    {% endif %}
+
+    <h3>Élèves inscrits</h3>
+    {% if session.stagiaires|length > 0 %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stagiaire in session.stagiaires %}
+                    <tr>
+                        <td>{{ stagiaire.nom }}</td>
+                        <td>{{ stagiaire.prenom }}</td>
+                        <td>{{ stagiaire.email }}</td>
+                        <td>{{ stagiaire.telephone }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Il n'y a pas d'élèves inscrits à cette session.</p>
     {% endif %}
 </div>
 {% endblock %}
