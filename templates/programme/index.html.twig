@@ -9,7 +9,7 @@
     <h1>Liste des Programmes</h1>
     <ul>
         {% for programme in programmes %}
-            <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.getNom() }}</a></li>
+            <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.nom() }}</a></li>
         {% endfor %}
     </ul>
 </div>

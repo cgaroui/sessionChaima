@@ -154,7 +154,7 @@ class Session
 
     public function removeStagiaire(Stagiaire $stagiaire): static
     {
-        $this->Stagiaires->removeElement($stagiaire);
+        $this->stagiaires->removeElement($stagiaire);
 
         return $this;
     }

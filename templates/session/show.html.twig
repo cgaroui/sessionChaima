@@ -7,13 +7,18 @@
 {% block body %}
 <div class="container">
     <h1>Session : {{ session.intitule }}</h1>
-    <p>Description : {{ session.description }}</p>
+    <p>
+        Date début : {{ session.dateDebut | date("d-m-Y") }}<br>
+        Date Fin : {{ session.dateFin | date("d-m-Y") }} <br>
+        Nombre de places : {{ session.nbPlaces}} <br>
+        Nombre de places réservées : {{ session.placesReserve}}
+    </p>
 
     <h3>Programmes de la session</h3>
     {% if session.programmes|length > 0 %}
         <ul>
             {% for programme in session.programmes %}
-                <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.getNom() }}</a></li>
+                <li><a href="{{ path('show_programme', { 'id': programme.id }) }}">{{ programme.module.nom() }}</a></li>
             {% endfor %}
         </ul>
     {% else %}
