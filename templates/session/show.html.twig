@@ -12,41 +12,115 @@
         Nombre de places réservées : {{ session.placesReserve }}
     </p>
 
-    <h3>Programmes de la session</h3>
-    {% if session.programmes|length > 0 %}
-        <ul>
-            {% for programme in session.programmes %}
-                <li>{{ programme.module.nom }} : {{ programme.nbJours }} jours</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Cette session n'a aucun programme.</p>
-    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Élèves inscrits</h3>
+            {% if session.stagiaires|length > 0 %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stagiaire in session.stagiaires %}
+                            <tr>
+                                <td>{{ stagiaire.nom }}</td>
+                                <td>{{ stagiaire.prenom }}</td>
+                                <td>{{ stagiaire.email }}</td>
+                                <td>{{ stagiaire.telephone }}</td>
+                                <td><a href="">Désinscrire</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Il n'y a pas d'élèves inscrits à cette session.</p>
+            {% endif %}
 
-    <h3>Élèves inscrits</h3>
-    {% if session.stagiaires|length > 0 %}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Email</th>
-                    <th>Téléphone</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for stagiaire in session.stagiaires %}
-                    <tr>
-                        <td>{{ stagiaire.nom }}</td>
-                        <td>{{ stagiaire.prenom }}</td>
-                        <td>{{ stagiaire.email }}</td>
-                        <td>{{ stagiaire.telephone }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Il n'y a pas d'élèves inscrits à cette session.</p>
-    {% endif %}
+            <h3>Élèves non inscrits</h3>
+            {% if non_inscrits|length > 0 %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stagiaire in non_inscrits %}
+                            <tr>
+                                <td>{{ stagiaire.nom }}</td>
+                                <td>{{ stagiaire.prenom }}</td>
+                                <td>{{ stagiaire.email }}</td>
+                                <td>{{ stagiaire.telephone }}</td>
+                                <td><a href="">Inscrire</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Il n'y a pas d'élèves non inscrits à cette session.</p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h3>Modules programmés</h3>
+            {% if session.programmes|length > 0 %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>categorie</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for programme in session.programmes %}
+                            <tr>
+                                <td>{{ programme.module.nom }}</td>
+                                <td>{{ programme.module.categorie.nom}}</td>
+                                <td><a href="">Déprogrammer</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Il n'y a pas de modules programmés pour cette session.</p>
+            {% endif %}
+
+            <h3>Modules non programmés</h3>
+            {% if non_programmes|length > 0 %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>CATEGORIE</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for programme in non_programmes %}
+                            <tr>
+                                <td>{{ programme.module.nom }}</td>
+                                <td>{{ programme.module.categorie.nom }}</td>
+                                <td><a href="">Programmer</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Il n'y a pas de modules non programmés pour cette session.</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
+
