@@ -61,7 +61,7 @@
                                 <td>{{ stagiaire.prenom }}</td>
                                 <td>{{ stagiaire.email }}</td>
                                 <td>{{ stagiaire.telephone }}</td>
-                                <td><a href="">Inscrire</a></td>
+                                <td><a href="{{ path('inscrire_stagiaire', {'id': session.id, 'stagiaireId': stagiaire.id}) }}">Inscrire</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

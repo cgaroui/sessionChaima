@@ -31,20 +31,24 @@ class SessionController extends AbstractController
 {
     // Obtenir tous les stagiaires
     $allStagiaires = $stagiaireRepository->findAll();
-
     // Obtenir tous les modules
     $allModules = $moduleRepository->findAll();
-
-    // Filtrer les stagiaires non inscrits
-    $nonInscrits = array_filter($allStagiaires, function ($stagiaire) use ($session) {
-        return !$session->getStagiaires()->contains($stagiaire);
-    });
-
+    // selectionner les stagiaires non inscrits et les mettres dans le tableau nonInscrits qui est vide au depart
+    $nonInscrits = [];
+    // je parcours tout les stagiaires et des que un n'est pas inscrit à la session je l'ajoute au tableau
+    foreach ($allStagiaires as $stagiaire) {
+        if (!$session->getStagiaires()->contains($stagiaire)) {
+            $nonInscrits[] = $stagiaire;
+        }
+    }
     // Filtrer les modules non programmés
-    $nonProgrammes = array_filter($allModules, function ($module) use ($session) {
-        return !$session->getProgrammes()->contains($module);
-    });
-
+    $nonProgrammes = [];
+    //je parcours tout les modules et je verifie si un module n'est pas dans la session ou je suis je l'ajoute au tableau
+    foreach ($allModules as $module){
+        if(!$session->getProgrammes()->contains($module)){
+            $nonProgrammes[] = $module;
+        }
+    }
     return $this->render('session/show.html.twig', [
         'session' => $session,
         'non_inscrits' => $nonInscrits,
@@ -112,6 +116,34 @@ class SessionController extends AbstractController
             'session' => $session,
         ]);
     }
+
+
+    
+  #[Route('/session/{id}/inscrire/{stagiaireId}', name:'inscrire_stagiaire')]
+ 
+public function inscrire($id, $stagiaireId, EntityManagerInterface $em)
+{
+    // Récupérer la session et le stagiaire via leurs IDs
+    $session = $em->getRepository(Session::class)->find($id);
+    $stagiaire = $em->getRepository(Stagiaire::class)->find($stagiaireId);
+
+    // Si la session ou le stagiaire n'est pas trouvé, afficher un message d'erreur
+    if (!$session || !$stagiaire) {
+        echo "Erreur : Session ou Stagiaire non trouvé"; // Affichage direct pour le débogage
+        return new Response(); // Arrête l'exécution du code après l'affichage du message
+    }
+
+    // Ajouter le stagiaire à la session
+    $session->addStagiaire($stagiaire);
+
+    // Enregistrer les modifications dans la base de données
+    $em->persist($session);
+    $em->flush();
+
+    // Rediriger vers la page de détails de la session
+    return $this->redirectToRoute('show_session', ['id' => $id]);
+}
+
 
 
     
