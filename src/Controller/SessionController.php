@@ -6,6 +6,7 @@ use App\Entity\Session;
 use App\Entity\Programme;
 use App\Entity\Stagiaire;
 use App\Form\ProgrammeType;
+use App\Entity\ModuleSession;
 use App\Repository\ProgrammeRepository;
 use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -168,21 +169,33 @@ public function desinscrire($id, $stagiaireId, EntityManagerInterface $em){
 }
 
 
-#[Route('/session/{id}/programmer/{programmeId}', name:'programmer_module')]
-public function programmer($id, $programmeId, EntityManagerInterface $em){
+#[Route('/session/{id}/programmer/{moduleId}', name:'programmer_module')]
+public function programmer($id, $moduleId, EntityManagerInterface $em, Request $request){
 
     $session = $em->getRepository(Session::class)->find($id);
-    $programme = $em->getRepository(Programme::class)->find($programmeId);
+    $module = $em->getRepository(Programme::class)->find($moduleId);
 
-    if (!$session || !$programme) {
+    // dd($request);
+
+    if (!$session || !$module) {
         echo "Erreur : Session ou Stagiaire non trouvé"; // Affichage direct pour le débogage
         return new Response(); // Arrête l'exécution du code après l'affichage du message
     }
 
-    //supprimer le stagiaire 
+    $programme = new Programme;
+    $module = new ModuleSession;
+
+    // $programme->setNbJours()= :$;
+    $nombreJours = $request->request->get('nombre_jours');
+
+    //mettre à jour la valeur nombreJours
+    $programme->setNbJours($nombreJours);
+    $programme->setSession($session);
+    $programme->setModule($module->getId());
+    $em->persist($programme);
+
     $session->addProgramme($programme);
 
-    $em->persist($programme);
     $em->flush();
 
 
@@ -192,33 +205,27 @@ public function programmer($id, $programmeId, EntityManagerInterface $em){
 
 
 
-#[Route('/session/{id}/deprogrammer/{programmeId}', name:'deprogrammer_module')]
-public function deprogrammer($id, $programmeId, EntityManagerInterface $em){
+#[Route('/session/{id}/deprogrammer/{moduleId}', name:'deprogrammer_module')]
+public function deprogrammer($id, $moduleId, EntityManagerInterface $em){
 
     $session = $em->getRepository(Session::class)->find($id);
-    $programme = $em->getRepository(Programme::class)->find($programmeId);
+    $module = $em->getRepository(Programme::class)->find($moduleId);
 
-    if (!$session || !$programme) {
+    if (!$session || !$module) {
         echo "Erreur : Session ou Stagiaire non trouvé"; // Affichage direct pour le débogage
         return new Response(); // Arrête l'exécution du code après l'affichage du message
     }
 
-    //supprimer le stagiaire 
-    $session->removeProgramme($programme);
+    //supprimer le programme
+    $session->removeProgramme($module);
 
-    $em->persist($programme);
+   
+    $em->persist($module);
     $em->flush();
 
 
     return $this->redirectToRoute('show_session', ['id' => $id]);
 
 }
-
-
-
-
-
-    
-
 }  
 

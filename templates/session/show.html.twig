@@ -86,10 +86,10 @@
                     <tbody>
                         {% for programme in session.programmes %}
                             <tr>
-                                <td>{{ programme.module.nom }}</td>
+                                {# <td>{{ module.nom }}</td> #}
                                 <td>{{ programme.module.categorie.nom}}</td>
                                 <td>{{ programme.nbJours}}</td>
-                                <td><a href="{{path('deprogrammer_module', {'id': session.id, 'programmeId': programme.id})}}">Déprogrammer</a></td>
+                                <td><a href="{{path('deprogrammer_module', {'id': session.id, 'moduleId': programme.module.id})}}">Déprogrammer</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -115,7 +115,7 @@
                                 <td>{{ programme.module.nom }}</td>
                                 <td>{{ programme.module.categorie.nom }}</td>
                                 <td>
-                                    <form action="{{ path('programmer_module', {'id': session.id, 'programmeId': programme.id}) }}" method="post">
+                                    <form action="{{ path('programmer_module', {'id': session.id, 'moduleId': programme.module.id}) }}" method="post">
                                         <input type="number" name="nombre_jours" min="1" required style="width: 70px;">
                                 </td>
                                 <td>
