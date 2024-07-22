@@ -33,7 +33,7 @@
                                 <td>{{ stagiaire.prenom }}</td>
                                 <td>{{ stagiaire.email }}</td>
                                 <td>{{ stagiaire.telephone }}</td>
-                                <td><a href="">Désinscrire</a></td>
+                                <td><a href="{{path('desinscrire_stagiaire',{'id': session.id,'stagiaireId':stagiaire.id})}}">Désinscrire</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -87,7 +87,7 @@
                             <tr>
                                 <td>{{ programme.module.nom }}</td>
                                 <td>{{ programme.module.categorie.nom}}</td>
-                                <td><a href="">Déprogrammer</a></td>
+                                <td><a href="{{path('deprogrammer_module', {'id': session.id, 'programmeId': programme.id})}}">Déprogrammer</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -111,7 +111,7 @@
                             <tr>
                                 <td>{{ programme.module.nom }}</td>
                                 <td>{{ programme.module.categorie.nom }}</td>
-                                <td><a href="">Programmer</a></td>
+                                <td><a href="{{path('programmer_module', {'id': session.id, 'programmeId': programme.id})}}">Programmer</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
