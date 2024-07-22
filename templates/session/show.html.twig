@@ -79,6 +79,7 @@
                         <tr>
                             <th>Nom</th>
                             <th>categorie</th>
+                            <th>Nombre de jours</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -87,6 +88,7 @@
                             <tr>
                                 <td>{{ programme.module.nom }}</td>
                                 <td>{{ programme.module.categorie.nom}}</td>
+                                <td>{{ programme.nbJours}}</td>
                                 <td><a href="{{path('deprogrammer_module', {'id': session.id, 'programmeId': programme.id})}}">Déprogrammer</a></td>
                             </tr>
                         {% endfor %}
@@ -103,6 +105,7 @@
                         <tr>
                             <th>Nom</th>
                             <th>CATEGORIE</th>
+                            <th>Nombre de jours</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -111,7 +114,14 @@
                             <tr>
                                 <td>{{ programme.module.nom }}</td>
                                 <td>{{ programme.module.categorie.nom }}</td>
-                                <td><a href="{{path('programmer_module', {'id': session.id, 'programmeId': programme.id})}}">Programmer</a></td>
+                                <td>
+                                    <form action="{{ path('programmer_module', {'id': session.id, 'programmeId': programme.id}) }}" method="post">
+                                        <input type="number" name="nombre_jours" min="1" required style="width: 70px;">
+                                </td>
+                                <td>
+                                        <button type="submit" class="btn btn-primary btn-sm">Programmer</button>
+                                    </form>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
