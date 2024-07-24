@@ -35,7 +35,7 @@
                     <tbody>
                         {% for session in stagiaire.sessions %}
                             <tr>
-                                <td><a href="{{ path('show_session',{'id': session.id} )}}"></a>{{ session.intitule }}</td>
+                                <td><a href="{{ path('show_session',{'id': session.id} )}}">{{ session.intitule }}</a></td>
                                 <td>{{ session.dateDebut|date('d-m-Y') }}</td>
                                 <td>{{ session.dateFin|date('d-m-Y') }}</td>
                                 <td>{{ session.nbPlaces }}</td>
