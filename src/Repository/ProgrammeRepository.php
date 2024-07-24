@@ -40,4 +40,16 @@ class ProgrammeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findModulesNonProgrammes(Session $session)
+    {
+        // Cette requête doit être adaptée à votre schéma de base de données
+        // Supposons que les modules non programmés pour une session sont ceux qui ne sont pas associés à la session
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.session', 's')
+            ->andWhere('s.id != :sessionId OR s.id IS NULL')
+            ->setParameter('sessionId', $session->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }

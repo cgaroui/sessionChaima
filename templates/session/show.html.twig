@@ -86,7 +86,7 @@
                     <tbody>
                         {% for programme in session.programmes %}
                             <tr>
-                                {# <td>{{ module.nom }}</td> #}
+                                <td>{{ programme.module.nom }}</td>
                                 <td>{{ programme.module.categorie.nom}}</td>
                                 <td>{{ programme.nbJours}}</td>
                                 <td><a href="{{path('deprogrammer_module', {'id': session.id, 'moduleId': programme.module.id})}}">Déprogrammer</a></td>
@@ -110,10 +110,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for programme in non_programmes %}
+                        {% for programme in session.non_programmes %}
                             <tr>
-                                <td>{{ programme.module.nom }}</td>
-                                <td>{{ programme.module.categorie.nom }}</td>
+                                 <td>{{programme.module.nom }}</td> 
+                                 <td>{{ programme.module.categorie.nom }}</td> 
                                 <td>
                                     <form action="{{ path('programmer_module', {'id': session.id, 'moduleId': programme.module.id}) }}" method="post">
                                         <input type="number" name="nombre_jours" min="1" required style="width: 70px;">
@@ -128,7 +128,7 @@
                 </table>
             {% else %}
                 <p>Il n'y a pas de modules non programmés pour cette session.</p>
-            {% endif %}
+            {% endif %}#}
         </div>
     </div>
 </div>

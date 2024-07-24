@@ -7,6 +7,7 @@ use App\Entity\Programme;
 use App\Entity\Stagiaire;
 use App\Form\ProgrammeType;
 use App\Entity\ModuleSession;
+use App\Repository\SessionRepository;
 use App\Repository\ProgrammeRepository;
 use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +18,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
 {
+
+    #-----------------------------------------------------------------
+    # Liste des sessions d'une formation
+    #-----------------------------------------------------------------
     #[Route('/session', name: 'app_session')]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -27,35 +32,29 @@ class SessionController extends AbstractController
         ]);
     }
 
+
+    #-----------------------------------------------------------------
+    # détail d'une session 
+    #-----------------------------------------------------------------
+
     #[Route('/session/{id}', name: 'show_session')]
-    public function showSession(Session $session, StagiaireRepository $stagiaireRepository, ProgrammeRepository $moduleRepository)
-{
-    // Obtenir tous les stagiaires
-    $allStagiaires = $stagiaireRepository->findAll();
-    // Obtenir tous les modules
-    $allModules = $moduleRepository->findAll();
-    // selectionner les stagiaires non inscrits et les mettres dans le tableau nonInscrits qui est vide au depart
-    $nonInscrits = [];
-    // je parcours tout les stagiaires et des que un n'est pas inscrit à la session je l'ajoute au tableau
-    foreach ($allStagiaires as $stagiaire) {
-        if (!$session->getStagiaires()->contains($stagiaire)) {
-            $nonInscrits[] = $stagiaire;
-        }
+    public function showSession(Session $session,Programme $programme, StagiaireRepository $stagiaireRepository, ProgrammeRepository $moduleRepository, SessionRepository $sr)
+    {
+        // Obtenir tous les stagiaires
+        $allStagiaires = $stagiaireRepository->findAll();
+        // Obtenir tous les modules
+        $allModules = $moduleRepository->findAll();
+        // selectionner les stagiaires non inscrits et les mettres dans le tableau nonInscrits qui est vide au depart
+        $nonInscrits = $sr->findNonInscrits($session->getId());
+        
+        // Filtrer les modules non programmés
+        $nonProgrammes = $sr->findNonProgrammes($programme->getId());
+        return $this->render('session/show.html.twig', [
+            'session' => $session,
+            'non_inscrits' => $nonInscrits,
+            'non_programmes' => $nonProgrammes,
+        ]);
     }
-    // Filtrer les modules non programmés
-    $nonProgrammes = [];
-    //je parcours tout les modules et je verifie si un module n'est pas dans la session ou je suis je l'ajoute au tableau
-    foreach ($allModules as $module){
-        if(!$session->getProgrammes()->contains($module)){
-            $nonProgrammes[] = $module;
-        }
-    }
-    return $this->render('session/show.html.twig', [
-        'session' => $session,
-        'non_inscrits' => $nonInscrits,
-        'non_programmes' => $nonProgrammes,
-    ]);
-}
 
 
 
@@ -88,35 +87,37 @@ class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/session/{id}/ajouter-programme', name: 'add_programme_session')]
-    public function newProgramme(Request $request, Session $session, EntityManagerInterface $entityManager): Response
-    {
-        $programme = new Programme();
-        $form = $this->createForm(ProgrammeType::class, $programme);
+    // #[Route('/session/{id}/ajouter-programme', name: 'add_programme_session')]
+    // public function newProgramme(Request $request, Session $session, EntityManagerInterface $entityManager): Response
+    // {
+    //     $programme = new Programme();
+    //     $form = $this->createForm(ProgrammeType::class, $programme);
         
-        $form->handleRequest($request);
+    //     $form->handleRequest($request);
 
-        //je verifie si mes champs ont été correctement remplis et mon formulaire bien soumis
-        if ($form->isSubmitted() && $form->isValid()) {
-            $programme->setSession($session); // Lie le programme à la session en cours
+    //     //je verifie si mes champs ont été correctement remplis et mon formulaire bien soumis
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $programme->setSession($session); // Lie le programme à la session en cours
 
-            $programme = $form->getData();
-            //ici persist est equivalent à prepare(),il prepare la requete
-            $entityManager->persist($programme);
-            //methode flush pour exécuter la requete
-            $entityManager->flush();
+    //         $programme = $form->getData();
+    //         //ici persist est equivalent à prepare(),il prepare la requete
+    //         $entityManager->persist($programme);
+    //         //methode flush pour exécuter la requete
+    //         $entityManager->flush();
 
-            $this->addFlash('success', 'Le programme a été ajouté avec succès.');
+    //         $this->addFlash('success', 'Le programme a été ajouté avec succès.');
 
-            //on retourn à la la page detail session où se trouve la liste des programme pour voi s'il s'est bien ajouté
-            return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
-        }
+    //         //on retourn à la la page detail session où se trouve la liste des programme pour voi s'il s'est bien ajouté
+    //         return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
+    //     }
 
-        return $this->render('session/new_programme.html.twig', [
-            'form' => $form->createView(),
-            'session' => $session,
-        ]);
-    }
+    //     return $this->render('session/new_programme.html.twig', [
+    //         'form' => $form->createView(),
+    //         'session' => $session,
+    //     ]);
+    // }
+
+
 
 
     
@@ -183,15 +184,15 @@ public function programmer($id, $moduleId, EntityManagerInterface $em, Request $
     }
 
     $programme = new Programme;
-    $module = new ModuleSession;
+    // $module = new ModuleSession;
 
-    // $programme->setNbJours()= :$;
     $nombreJours = $request->request->get('nombre_jours');
 
     //mettre à jour la valeur nombreJours
     $programme->setNbJours($nombreJours);
     $programme->setSession($session);
     $programme->setModule($module->getId());
+    
     $em->persist($programme);
 
     $session->addProgramme($programme);
