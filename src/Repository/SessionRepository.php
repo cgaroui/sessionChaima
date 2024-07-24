@@ -75,20 +75,23 @@ class SessionRepository extends ServiceEntityRepository
         // Création du QueryBuilder pour la sous-requête
         $sub = $em->createQueryBuilder();
         
+        
+        $qb = $sub;
         // Construction de la sous-requête pour obtenir les modules associés au programme de la session
-        $sub->select('P') 
-            ->from('App\Entity\Programme', 'P')  
+        $qb->select('m') 
+            ->from('App\Entity\ModuleSession', 'm')  
             ->leftJoin('m.programmes', 'mod')  
-            ->where('mod.id = :id')  ;
+            ->where('mod.session = :id')  ;
     
         
         // Création du QueryBuilder pour la requête principale
         $sub = $em->createQueryBuilder();
-        $sub->select('m')
-            ->from('App\Entity\ModuleSession', 'm')  // Entité des modules
-            ->where($sub->expr()->in('m.id', $sub->getDQL()))  // Filtre par les modules associés
-            ->orderBy('m.nom');  // Tri par le nom des modules
-        
+        $sub->select('mt')
+            ->from('App\Entity\ModuleSession', 'mt')  // Entité des modules
+            ->where($sub->expr()->notIn('mt.id', $qb->getDQL())) 
+            // ->orderBy('mt.nom');  // Tri par le nom des modules
+            ->setParameter('id',$programme_id);
+
         // Exécution de la requête et retour des résultats
         $query = $sub->getQuery();
         return $query->getResult();

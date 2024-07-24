@@ -6,7 +6,7 @@
     <h1>Liste des stagiaires</h1>
 
     {% for stagiaire in stagiaires %}
-    <a href="{{path('show_stagiaire', {'id':stagiaire.id})}}">{{ stagiaire.prenom }}</a>
+    <a href="{{path('show_stagiaire', {'id':stagiaire.id})}}">{{ stagiaire.nom }} {{ stagiaire.prenom }}</a>
     <br>
     {% endfor %}
 {% endblock %}

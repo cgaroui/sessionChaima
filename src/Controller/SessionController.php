@@ -48,7 +48,8 @@ class SessionController extends AbstractController
         $nonInscrits = $sr->findNonInscrits($session->getId());
         
         // Filtrer les modules non programmés
-        $nonProgrammes = $sr->findNonProgrammes($programme->getId());
+        $nonProgrammes = $sr->findNonProgrammes($session->getId());
+        // dd($nonProgrammes);
         return $this->render('session/show.html.twig', [
             'session' => $session,
             'non_inscrits' => $nonInscrits,
@@ -174,7 +175,7 @@ public function desinscrire($id, $stagiaireId, EntityManagerInterface $em){
 public function programmer($id, $moduleId, EntityManagerInterface $em, Request $request){
 
     $session = $em->getRepository(Session::class)->find($id);
-    $module = $em->getRepository(Programme::class)->find($moduleId);
+    $module = $em->getRepository(ModuleSession::class)->find($moduleId);
 
     // dd($request);
 
@@ -183,25 +184,27 @@ public function programmer($id, $moduleId, EntityManagerInterface $em, Request $
         return new Response(); // Arrête l'exécution du code après l'affichage du message
     }
 
-    $programme = new Programme;
-    // $module = new ModuleSession;
-
-    $nombreJours = $request->request->get('nombre_jours');
-
-    //mettre à jour la valeur nombreJours
-    $programme->setNbJours($nombreJours);
-    $programme->setSession($session);
-    $programme->setModule($module->getId());
+    if(isset($_POST["submit"])) {
+        $programme = new Programme();
+        // $module = new ModuleSession;
     
-    $em->persist($programme);
-
-    $session->addProgramme($programme);
-
-    $em->flush();
-
-
-    return $this->redirectToRoute('show_session', ['id' => $id]);
-
+        $nombreJours = $request->request->get('nombre_jours');
+        $nombreJours = filter_input(INPUT_POST, "nombre_jours", FILTER_VALIDATE_INT);
+    
+        //mettre à jour la valeur nombreJours
+        $programme->setNbJours($nombreJours);
+        $programme->setSession($session);
+        $programme->setModule($module);
+        
+        $em->persist($programme);
+        
+        $session->addProgramme($programme);
+        
+        $em->persist($session);
+        $em->flush();
+    
+        return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
+    }
 }
 
 

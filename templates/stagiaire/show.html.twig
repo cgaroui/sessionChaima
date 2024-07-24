@@ -3,8 +3,9 @@
 {% block title %}Détail d'un stagiaire {% endblock %}
 
 {% block body %}
-    <h1>Détail d'un stagiaire</h1>
-    <h2>{{ stagiaire }}</h2>
+<div class="container">
+    <h1>Détail stagiaire {{ stagiaire }}</h1>
+    
     
     <p><strong>Nom :</strong> {{ stagiaire.nom }}</p>
     <p><strong>Prénom :</strong> {{ stagiaire.prenom }}</p>
@@ -14,15 +15,37 @@
     <p><strong>Email :</strong> {{ stagiaire.email }}</p>
     <p><strong>Téléphone :</strong> {{ stagiaire.telephone }}</p>
 
-    <h3>Liste des formations auxquelles il est inscrit</h3>
     {# on verifie si le tableau(collection) session dans stagiaire est vide => inscrit à aucune session #}
-    {% if stagiaire.sessions|length > 0 %}
-        <ul>
-            {% for session in stagiaire.sessions %}
-                <li>{{ session.nom }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Ce stagiaire n'est inscrit à aucune formation.</p>
-    {% endif %}
+    
+
+    <div class="row">
+        <div class="col-md">
+            <h3>Liste des formations auxquelles il/elle est inscrit</h3>
+            {% if stagiaire.sessions|length > 0 %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nom de session</th>
+                            <th>Date de Début</th>
+                            <th>Date de fin </th>
+                            <th>Nombre de places</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in stagiaire.sessions %}
+                            <tr>
+                                <td><a href="{{ path('show_session',{'id': session.id} )}}"></a>{{ session.intitule }}</td>
+                                <td>{{ session.dateDebut|date('d-m-Y') }}</td>
+                                <td>{{ session.dateFin|date('d-m-Y') }}</td>
+                                <td>{{ session.nbPlaces }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Il n'y a pas d'élèves inscrits à cette session.</p>
+            {% endif %}
+       
+</div>
 {% endblock %}
