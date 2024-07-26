@@ -59,6 +59,11 @@ class SessionController extends AbstractController
 
 
 
+    
+    #-----------------------------------------------------------------
+    # Liste des modules d'une session (le programme)
+    #-----------------------------------------------------------------
+
     #[Route('/session/{id}/programmes', name: 'session_programmes')]
     public function programmes(Session $session): Response
     {
@@ -135,12 +140,25 @@ public function inscrire($id, $stagiaireId, EntityManagerInterface $em)
         return new Response(); // Arrête l'exécution du code après l'affichage du message
     }
 
+    //verifier le nombre de places disponibles 
+    $nbPlacesDisponibles = $session->getNbPlacesDisponibles();
+
+        if ($nbPlacesDisponibles <= 0) {
+            // Pas assez de places disponibles
+            return new Response("Erreur : Aucune place disponible pour cette session");
+        }
+
+
     // Ajouter le stagiaire à la session
     $session->addStagiaire($stagiaire);
 
     // Enregistrer les modifications dans la base de données
     $em->persist($session);
-    $em->flush();
+   // mettre à jour le nb de places réservées
+   $session->setPlacesReserve($session->getPlacesReserve() + 1);
+   $em->persist($session);
+
+   $em->flush();
 
     // Rediriger vers la page de détails de la session
     return $this->redirectToRoute('show_session', ['id' => $id]);
@@ -181,7 +199,7 @@ public function desinscrire($id, $stagiaireId, EntityManagerInterface $em){
         // dd($request);
 
         if (!$session || !$module) {
-            echo "Erreur : Session ou Stagiaire non trouvé"; // Affichage direct pour le débogage
+            echo "Erreur : Session ou module non trouvé"; // Affichage direct pour le débogage
             return new Response(); // Arrête l'exécution du code après l'affichage du message
         }
 
@@ -247,4 +265,6 @@ public function desinscrire($id, $stagiaireId, EntityManagerInterface $em){
         return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
         }
 }  
+
+
 

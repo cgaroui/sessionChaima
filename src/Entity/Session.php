@@ -50,12 +50,12 @@ class Session
     private ?Formation $formation = null;
 
    
-
+//on initialise tout les propriétés de type collection (les tableaux)->pour eviter les erreur de type null lors de l'utilisation count ou foreach..
     public function __construct()
     {
-        // $this->inscriptions = new ArrayCollection();
         $this->stagiaires = new ArrayCollection();
         $this->programmes = new ArrayCollection();
+        $this->placesReserve = 0; // Initialisation du nombre de places réservées
     }
 
     public function getId(): ?int
@@ -199,6 +199,12 @@ class Session
         $this->formation = $formation;
 
         return $this;
+    }
+
+    public function getNbPlacesDisponibles(): int {
+        $nbPlacesReservees = $this->placesReserve;
+        $nbInscrits = count($this->stagiaires);
+        return $this->nbPlaces - $nbPlacesReservees - $nbInscrits;
     }
 
    
