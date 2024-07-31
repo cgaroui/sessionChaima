@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Form\UserPasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,9 +37,8 @@ class UserController extends AbstractController
  
          // Passer les informations de l'utilisateur à la vue
          return $this->render('user/profile.html.twig', [
-             'pseudo' => $user->getPseudo(), // Nom d'utilisateur (pseudo)
-             'email' => $user->getEmail(), // Email
-            //  'role' => $user->getRoles(), // Rôles de l'utilisateur
+            'user' => $user, //récuperer un utilisateur pour acceder à toutes ces informatons pour les afficheer dans la vue
+
          ]);
      }
 
@@ -46,7 +46,7 @@ class UserController extends AbstractController
     public function editPassword(User $user, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         // Création du formulaire pour la gestion des mots de passe
-        $form = $this->createForm(UserPasswordType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         // Traitement de la requête HTTP pour le formulaire
         $form->handleRequest($request);
 
@@ -83,5 +83,40 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+
+
+    //     #[Route('/utilisateur/edition-mot-de-passe/{id}', name: 'user_edit')]
+    // public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    // {
+    //     $form = $this->createForm(UserType::class, $user);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $oldPassword = $form->get('oldPassword')->getData();
+    //         if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
+    //             $newPassword = $form->get('plainPassword')->getData();
+    //             $user->setPassword(
+    //                 $passwordHasher->hashPassword(
+    //                     $user,
+    //                     $newPassword
+    //                 )
+    //             );
+
+    //             $entityManager->persist($user);
+    //             $entityManager->flush();
+
+    //             $this->addFlash('success', 'Mot de passe mis à jour avec succès.');
+
+    //             return $this->redirectToRoute('user_profile');
+    //         } else {
+    //             $this->addFlash('error', 'Ancien mot de passe incorrect.');
+    //         }
+    //     }
+
+    //     return $this->render('user/edit_password.html.twig', [
+    //         'form' => $form->createView(),
+    //         'user' => $user,
+    //     ]);
+    // }
 }
 
