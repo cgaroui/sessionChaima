@@ -1,8 +1,26 @@
 body {
-    background-color: #d9e3f1;
+    background-color: white;
+    height: 100%;
+    margin: 0;
 
 }
 
 .containner{
     margin: 0 5rem;
 }
+
+footer{
+    background-color: #C0ECDE;
+    width: 100%;
+    height: 30%;
+
+}
+
+.navbar{
+    background-color: #C0ECDE;
+}
+
+.containner{
+    height: 70%;
+}
+

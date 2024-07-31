@@ -30,7 +30,7 @@ class SessionController extends AbstractController
         return $this->render('session/index.html.twig', [
             'sessions' => $sessions,
         ]);
-    }
+    } 
 
 
     #-----------------------------------------------------------------
