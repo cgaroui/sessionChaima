@@ -22,25 +22,25 @@ class UserController extends AbstractController
         $this->entityManager = $entityManager;// Stockage de l'EntityManager dans la propriété
     }
 
-     // Méthode pour afficher le profil de l'utilisateur connecté
-    //  #[Route('/profil', name: 'user_profile')]
-    //  public function profile(Security $security): Response
-    //  {
-    //      // Récupérer l'utilisateur connecté
-    //      $user = $security->getUser();
+    //  Méthode pour afficher le profil de l'utilisateur connecté
+     #[Route('/profile', name: 'user_profile')]
+     public function profile(Security $security): Response
+     {
+         // Récupérer l'utilisateur connecté
+         $user = $security->getUser();
  
-    //      // on s'assure que l'utilisateur est connecté
-    //      if (!$user) {
-    //          throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
-    //      }
+         // on s'assure que l'utilisateur est connecté
+         if (!$user) {
+             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+         }
  
-    //      // Passer les informations de l'utilisateur à la vue
-    //      return $this->render('user/profile.html.twig', [
-    //          'pseudo' => $user->getPseudo(), // Nom d'utilisateur (pseudo)
-    //          'email' => $user->getEmail(), // Email
-    //         //  'role' => $user->getRoles(), // Rôles de l'utilisateur
-    //      ]);
-    //  }
+         // Passer les informations de l'utilisateur à la vue
+         return $this->render('user/profile.html.twig', [
+             'pseudo' => $user->getPseudo(), // Nom d'utilisateur (pseudo)
+             'email' => $user->getEmail(), // Email
+            //  'role' => $user->getRoles(), // Rôles de l'utilisateur
+         ]);
+     }
 
     #[Route('/utilisateur/edition-mot-de-passe/{id}', name: 'user_edit')]
     public function editPassword(User $user, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
