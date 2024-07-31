@@ -85,38 +85,5 @@ class UserController extends AbstractController
     }
 
 
-    //     #[Route('/utilisateur/edition-mot-de-passe/{id}', name: 'user_edit')]
-    // public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
-    // {
-    //     $form = $this->createForm(UserType::class, $user);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $oldPassword = $form->get('oldPassword')->getData();
-    //         if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
-    //             $newPassword = $form->get('plainPassword')->getData();
-    //             $user->setPassword(
-    //                 $passwordHasher->hashPassword(
-    //                     $user,
-    //                     $newPassword
-    //                 )
-    //             );
-
-    //             $entityManager->persist($user);
-    //             $entityManager->flush();
-
-    //             $this->addFlash('success', 'Mot de passe mis à jour avec succès.');
-
-    //             return $this->redirectToRoute('user_profile');
-    //         } else {
-    //             $this->addFlash('error', 'Ancien mot de passe incorrect.');
-    //         }
-    //     }
-
-    //     return $this->render('user/edit_password.html.twig', [
-    //         'form' => $form->createView(),
-    //         'user' => $user,
-    //     ]);
-    // }
 }
 

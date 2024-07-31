@@ -30,37 +30,41 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Encode le mot de passe en clair
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
-
+    
+            // Sauvegarde de l'utilisateur en base de données
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // generate a signed url and email it to the user
+    
+            // Génère une URL signée et l'envoie par e-mail à l'utilisateur
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('admin@exemple.com', 'Admin site'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Veuillez confirmer votre email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-
-            // do anything else you need here, like send an email
-
+    
+            // Faites tout ce dont vous avez besoin ici, comme envoyer un e-mail
+    
+            // Connexion automatique de l'utilisateur après l'inscription
             return $security->login($user, AppAuthenticator::class, 'main');
         }
-
+    
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
     }
+    
+
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response

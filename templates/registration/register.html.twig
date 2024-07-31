@@ -1,24 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
-
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
+    <h1>Inscription</h1>
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.pseudo) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    
+    <!-- Affichage des erreurs globales du formulaire -->
+    {% if registrationForm.vars.errors|length > 0 %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in registrationForm.vars.errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
-        <button type="submit" class="btn">Register</button>
+    <!-- Affichage des erreurs spécifiques à chaque champ -->
+    {{ form_row(registrationForm.pseudo) }}
+    {{ form_row(registrationForm.email) }}
+    {{ form_row(registrationForm.plainPassword) }}
+    {{ form_row(registrationForm.agreeTerms) }}
+    
+   <button type="submit" class="btn btn-primary">S'inscrire</button>
+    
     {{ form_end(registrationForm) }}
+
+    <!-- Affichage des messages flash -->
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
 {% endblock %}
