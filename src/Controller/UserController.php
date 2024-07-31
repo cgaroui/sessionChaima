@@ -70,6 +70,10 @@ class UserController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                 // Ajouter un message flash de succès
+                $this->addFlash('success', 'Mot de passe mis à jour avec succès.');
+
+
                 // Redirection 
                 return $this->redirectToRoute('app_login');
             } else {

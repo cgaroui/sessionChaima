@@ -38,23 +38,23 @@ class SessionController extends AbstractController
     #-----------------------------------------------------------------
 
     #[Route('/session/{id}', name: 'show_session')]
-    public function showSession(Session $session, StagiaireRepository $stagiaireRepository, ProgrammeRepository $moduleRepository, SessionRepository $sr)
+    public function showSession(Session $session = null, StagiaireRepository $stagiaireRepository, ProgrammeRepository $moduleRepository, SessionRepository $sr)
     {
-        // Obtenir tous les stagiaires
-        $allStagiaires = $stagiaireRepository->findAll();
-        // Obtenir tous les modules
-        $allModules = $moduleRepository->findAll();
-        // selectionner les stagiaires non inscrits et les mettres dans le tableau nonInscrits qui est vide au depart
-        $nonInscrits = $sr->findNonInscrits($session->getId());
-        
-        // Filtrer les modules non programmés
-        $nonProgrammes = $sr->findNonProgrammes($session->getId());
-        // dd($nonProgrammes);
-        return $this->render('session/show.html.twig', [
-            'session' => $session,
-            'non_inscrits' => $nonInscrits,
-            'non_programmes' => $nonProgrammes,
-        ]);
+        if($session) {
+            // selectionner les stagiaires non inscrits et les mettres dans le tableau nonInscrits qui est vide au depart
+            $nonInscrits = $sr->findNonInscrits($session->getId());
+            
+            // Filtrer les modules non programmés
+            $nonProgrammes = $sr->findNonProgrammes($session->getId());
+            // dd($nonProgrammes);
+            return $this->render('session/show.html.twig', [
+                'session' => $session,
+                'non_inscrits' => $nonInscrits,
+                'non_programmes' => $nonProgrammes,
+            ]);
+        } else {
+            return $this->redirectToRoute("app_session");
+        }
     }
 
 

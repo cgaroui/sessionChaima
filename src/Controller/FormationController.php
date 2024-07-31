@@ -21,22 +21,32 @@ class FormationController extends AbstractController
     }
 
     #[Route('/formation/{id}', name: 'show_formation')]
-    public function show(Formation $formation): Response
-    {
-        return $this->render('formation/show.html.twig', [
-            'formation' => $formation,
-        ]);
+    public function show(Formation $formation = null): Response
+    { 
+        if($formation){
+            return $this->render('formation/show.html.twig', [
+                'formation' => $formation,
+            ]);
+        }else{
+            return $this->redirectToRoute("app_formation");
+        }
     }
 
     #[Route('/formation/{id}/sessions', name: 'formation_sessions')]
-    public function sessions(Formation $formation): Response
+    public function sessions(Formation $formation = null): Response
     {
-        // Supposez que $formation->getSessions() retourne la liste des sessions liées à cette formation
-        $sessions = $formation->getSessions();
+        //on verifie si la formation exxiste on affiche la liste de ses sessions
+        if($formation){
 
-        return $this->render('formation/sessions.html.twig', [
-            'formation' => $formation,
-            'sessions' => $sessions,
-        ]);
+            $sessions = $formation->getSessions();
+    
+            return $this->render('formation/sessions.html.twig', [
+                'formation' => $formation,
+                'sessions' => $sessions,
+            ]);
+        }else{
+            //sinon on redirige vers lq liste des formation (ce if assure la sécurité en cas dentré un autre id dans l'url)
+            return $this->redirectToRoute("app_formation");
+        }
     }
 }

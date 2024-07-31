@@ -53,7 +53,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
     
-            // Faites tout ce dont vous avez besoin ici, comme envoyer un e-mail
+          
     
             // Connexion automatique de l'utilisateur après l'inscription
             return $security->login($user, AppAuthenticator::class, 'main');
