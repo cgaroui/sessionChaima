@@ -15,11 +15,15 @@ body {
     grid-template-rows: auto 1fr auto;
 }  
 
-.containner{
+.container{
     flex: 1 0 auto;
+    padding: 0 5%;
 }
 
 
+/*--------------------------------------------------------------------------------
+                        CSS NAVBAR
+--------------------------------------------------------------------------------*/
 
 .navbar{
     background-color: #C0ECDE;
@@ -71,54 +75,10 @@ nav a{
     font-family: inherit; /* Important for vertical align on mobile phones */
     margin: 0; /* Important for vertical align on mobile phones */
   }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+/*--------------------------------------------------------------------------------
+                        CSS FOOTER
+--------------------------------------------------------------------------------*/
 
 
 footer{
@@ -151,4 +111,46 @@ footer svg{
 
 .text-footer p{
     padding: 0.5%;
+}
+
+/*--------------------------------------------------------------------------------
+                        CSS HOME
+--------------------------------------------------------------------------------*/
+.btns-auth{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    gap: 20px; 
+}
+ 
+.btn-auth{
+    height: 30px;
+    width: 150px;
+    border-radius: 15px;
+    background-color:#17CF97 ;
+    color: #f9f9f9;
+    border: none;
+    text-align: center;
+    text-decoration: none;  /*pour enlever le soulignement du texte (lien)*/
+}
+
+
+.en-tete{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.card{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
 }
